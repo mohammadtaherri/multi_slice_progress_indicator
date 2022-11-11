@@ -1,18 +1,15 @@
 part of multi_slice_progress_indicator;
 
-abstract class ProgressAnimation extends ProxyAnimation{
-
+abstract class ProgressAnimation extends ProxyAnimation {
   ProgressAnimation([super.animation]);
 
   double of(int sliceIndex);
   double ofInnerSlice();
   double ofMiddleSlice();
   double ofOutterSlice();
-
 }
 
-class CurvedProgressAnimation extends ProgressAnimation{
-
+class CurvedProgressAnimation extends ProgressAnimation {
   CurvedProgressAnimation({
     Animation<double> parent = kAlwaysDismissedAnimation,
     Curve innerSliceCurve = _defaultInnerSliceAnimationCurve,
@@ -27,7 +24,7 @@ class CurvedProgressAnimation extends ProgressAnimation{
   final Curve _innerSliceCurve;
   final Curve _middleSliceCurve;
   final Curve _outterSliceCurve;
- 
+
   @override
   double of(int sliceIndex) => _values[sliceIndex];
 
@@ -47,7 +44,7 @@ class CurvedProgressAnimation extends ProgressAnimation{
   }
 
   void _updateValues() {
-    if (_isReversing) 
+    if (_isReversing)
       _updateValuesWithFlippedCurves();
     else
       _updateValuesWithCurves();
@@ -72,15 +69,15 @@ class CurvedProgressAnimation extends ProgressAnimation{
   }
 }
 
-
 class ProgressController {
-
   ProgressController({
     required TickerProvider vsync,
     Duration forewardAnimationDuration = _defaultForewardAnimationDuration,
     Duration reverseAnimationDuration = _defaultReverseAnimationDuration,
     Duration completeAnimationDuration = _defaultCompleteAnimationDuration,
-  })  : _animationController = AnimationController(vsync: vsync,),
+  })  : _animationController = AnimationController(
+          vsync: vsync,
+        ),
         _forewardAnimationDuration = forewardAnimationDuration,
         _reverseAnimationDuration = reverseAnimationDuration,
         _completeAnimationDuration = completeAnimationDuration,
@@ -88,7 +85,6 @@ class ProgressController {
         _successColorsOpacityProxyAnimation = CurvedProgressAnimation(),
         _failureColorsOpacityProxyAnimation = CurvedProgressAnimation();
 
- 
   final AnimationController _animationController;
   final Duration _forewardAnimationDuration;
   final Duration _reverseAnimationDuration;
@@ -99,15 +95,16 @@ class ProgressController {
   ProgressAnimation get startAngle => _startAngleProxyAnimation;
   final ProgressAnimation _startAngleProxyAnimation;
 
-  ProgressAnimation get successColorsOpacity => _successColorsOpacityProxyAnimation;
+  ProgressAnimation get successColorsOpacity =>
+      _successColorsOpacityProxyAnimation;
   final ProgressAnimation _successColorsOpacityProxyAnimation;
 
-  ProgressAnimation get failureColorsOpacity => _failureColorsOpacityProxyAnimation;
+  ProgressAnimation get failureColorsOpacity =>
+      _failureColorsOpacityProxyAnimation;
   final ProgressAnimation _failureColorsOpacityProxyAnimation;
- 
 
-  Future<void> start() async{
-    if(!_canStart())
+  Future<void> start() async {
+    if (!_canStart()) 
       return;
 
     _prepareToStart();
@@ -120,7 +117,7 @@ class ProgressController {
   void _prepareToStart() {
     _runCompeleter = Completer();
     _updateAnimationDuration(_forewardAnimationDuration);
-    
+
     _startAngleProxyAnimation.parent = _animationController;
     _successColorsOpacityProxyAnimation.parent = kAlwaysDismissedAnimation;
     _failureColorsOpacityProxyAnimation.parent = kAlwaysDismissedAnimation;
@@ -136,9 +133,9 @@ class ProgressController {
     _stopCompleter?.complete();
     _startAngleProxyAnimation.parent = kAlwaysCompleteAnimation;
   }
-  
-  Future<void> completeWithSuccess() async{
-    if(!_canStop())
+
+  Future<void> completeWithSuccess() async {
+    if (!_canStop()) 
       return;
 
     await stop();
@@ -156,13 +153,13 @@ class ProgressController {
     _successColorsOpacityProxyAnimation.parent = kAlwaysCompleteAnimation;
   }
 
-  Future<void> completeWithFailure() async{
-    if(!_canStop())
+  Future<void> completeWithFailure() async {
+    if (!_canStop()) 
       return;
 
     await stop();
     _prepareToCompleteWithFailure();
-    await _forewardAnimation(); 
+    await _forewardAnimation();
     _doAfterCompleteWithFailure();
   }
 
@@ -180,23 +177,23 @@ class ProgressController {
     return _animationController.forward();
   }
 
-  Future<void> stop() async{
-    if(!_canStop())
+  Future<void> stop() async {
+    if (!_canStop()) 
       return;
 
     _runCompeleter!.complete();
     _stopCompleter = Completer();
-    
+
     return _stopCompleter!.future;
   }
 
   bool _canStop() => !(_runCompeleter?.isCompleted ?? true);
-  
-  Future<void> reverse() async{
-    if(!_canReverse())
+
+  Future<void> reverse() async {
+    if (!_canReverse()) 
       return;
 
-    _prepareToReverse();  
+    _prepareToReverse();
     await _reversAnimation();
     _refresh();
   }
@@ -209,12 +206,12 @@ class ProgressController {
     _updateAnimationDuration(_reverseAnimationDuration);
 
     _startAngleProxyAnimation.parent = _animationController;
-    
-    if(_successColorsOpacityProxyAnimation.parent == kAlwaysCompleteAnimation)
+
+    if (_successColorsOpacityProxyAnimation.parent == kAlwaysCompleteAnimation)
       _successColorsOpacityProxyAnimation.parent = _animationController;
-    
-    if(_failureColorsOpacityProxyAnimation.parent == kAlwaysCompleteAnimation)
-      _failureColorsOpacityProxyAnimation.parent = _animationController; 
+
+    if (_failureColorsOpacityProxyAnimation.parent == kAlwaysCompleteAnimation)
+      _failureColorsOpacityProxyAnimation.parent = _animationController;
   }
 
   Future<void> _reversAnimation() async {
@@ -226,15 +223,15 @@ class ProgressController {
     _startAngleProxyAnimation.parent = kAlwaysDismissedAnimation;
     _successColorsOpacityProxyAnimation.parent = kAlwaysDismissedAnimation;
     _failureColorsOpacityProxyAnimation.parent = kAlwaysDismissedAnimation;
-    
+
     _runCompeleter = null;
     _stopCompleter = null;
   }
 
-  void _updateAnimationDuration(Duration newDuration){
+  void _updateAnimationDuration(Duration newDuration) {
     _animationController.duration = newDuration;
   }
-  
+
   void dispose() {
     _animationController.dispose();
   }

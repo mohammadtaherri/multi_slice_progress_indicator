@@ -1,7 +1,6 @@
 part of multi_slice_progress_indicator;
 
-class RenderMultiSliceProgressIndicator extends RenderBox{
-
+class RenderMultiSliceProgressIndicator extends RenderBox {
   RenderMultiSliceProgressIndicator({
     required double radius,
     required Color background,
@@ -30,56 +29,56 @@ class RenderMultiSliceProgressIndicator extends RenderBox{
 
   double get radius => _radius;
   double _radius;
-  set radius(double value){
-    if(_radius == value)
+  set radius(double value) {
+    if (_radius == value) 
       return;
-    
+
     _radius = value;
     markNeedsLayout();
   }
 
   Color get background => _background;
   Color _background;
-  set background(Color value){
-    if(_background == value)
+  set background(Color value) {
+    if (_background == value) 
       return;
-    
+
     _background = value;
     markNeedsPaint();
   }
 
   List<Color> get colors => _colors;
   List<Color> _colors;
-  set colors(List<Color> value){
-    if(_colors == value)
+  set colors(List<Color> value) {
+    if (_colors == value) 
       return;
-    
+
     _colors = value;
     markNeedsPaint();
   }
 
   List<Color> get successColors => _successColors;
   List<Color> _successColors;
-  set successColors(List<Color> value){
-    if(_successColors == value)
+  set successColors(List<Color> value) {
+    if (_successColors == value) 
       return;
-    
+
     _successColors = value;
     markNeedsPaint();
   }
 
   ProgressAnimation get successColorsOpacity => _successColorsOpacity;
   ProgressAnimation _successColorsOpacity;
-  set successColorsOpacity(ProgressAnimation value){
-    if(_successColorsOpacity == value)
+  set successColorsOpacity(ProgressAnimation value) {
+    if (_successColorsOpacity == value) 
       return;
 
-    if(attached) 
+    if (attached) 
       _successColorsOpacity.removeListener(_animationsUpdated);
 
     _successColorsOpacity = value;
 
-    if(attached)
+    if (attached) 
       _successColorsOpacity.addListener(_animationsUpdated);
 
     _animationsUpdated();
@@ -87,26 +86,26 @@ class RenderMultiSliceProgressIndicator extends RenderBox{
 
   List<Color> get failureColors => _failureColors;
   List<Color> _failureColors;
-  set failureColors(List<Color> value){
-    if(_failureColors == value)
+  set failureColors(List<Color> value) {
+    if (_failureColors == value) 
       return;
-    
+
     _failureColors = value;
     markNeedsPaint();
   }
 
   ProgressAnimation get failureColorsOpacity => _failureColorsOpacity;
   ProgressAnimation _failureColorsOpacity;
-  set failureColorsOpacity(ProgressAnimation value){
-    if(_failureColorsOpacity == value)
+  set failureColorsOpacity(ProgressAnimation value) {
+    if (_failureColorsOpacity == value) 
       return;
 
-    if(attached) 
+    if (attached) 
       _failureColorsOpacity.removeListener(_animationsUpdated);
 
     _failureColorsOpacity = value;
 
-    if(attached)
+    if (attached) 
       _failureColorsOpacity.addListener(_animationsUpdated);
 
     _animationsUpdated();
@@ -114,34 +113,33 @@ class RenderMultiSliceProgressIndicator extends RenderBox{
 
   List<double> get colorStops => _colorStops;
   List<double> _colorStops;
-  set colorStops(List<double> value){
-    if(_colorStops == value)
+  set colorStops(List<double> value) {
+    if (_colorStops == value) 
       return;
-    
+
     _colorStops = value;
     markNeedsPaint();
   }
 
   ProgressAnimation get startAngle => _startAngle;
   ProgressAnimation _startAngle;
-  set startAngle(ProgressAnimation value){
-    if(_startAngle == value)
+  set startAngle(ProgressAnimation value) {
+    if (_startAngle == value) 
       return;
-    
-    if(attached) 
+
+    if (attached) 
       _startAngle.removeListener(_animationsUpdated);
 
     _startAngle = value;
 
-    if(attached)
+    if (attached) 
       _startAngle.addListener(_animationsUpdated);
 
     _animationsUpdated();
   }
 
-
   @override
-  void attach(covariant PipelineOwner owner){
+  void attach(covariant PipelineOwner owner) {
     super.attach(owner);
     _successColorsOpacity.addListener(_animationsUpdated);
     _failureColorsOpacity.addListener(_animationsUpdated);
@@ -166,15 +164,14 @@ class RenderMultiSliceProgressIndicator extends RenderBox{
   void _updateDrawnFlags() {
     _successSlicesShouldBeDrawn =
         successColorsOpacity.status != AnimationStatus.dismissed;
-    
+
     _failureSlicesShouldBeDrawn =
         failureColorsOpacity.status != AnimationStatus.dismissed;
-    
+
     _spinnerSlicesShouldBeDrawn =
         successColorsOpacity.status != AnimationStatus.completed &&
-        failureColorsOpacity.status != AnimationStatus.completed;
+            failureColorsOpacity.status != AnimationStatus.completed;
   }
-
 
   @override
   double computeMinIntrinsicWidth(double height) => radius * 2;
@@ -187,7 +184,7 @@ class RenderMultiSliceProgressIndicator extends RenderBox{
 
   @override
   double computeMaxIntrinsicHeight(double width) => radius * 2;
-  
+
   @override
   Size computeDryLayout(BoxConstraints constraints) {
     return constraints.constrain(Size(radius * 2, radius * 2));
@@ -215,7 +212,8 @@ class RenderMultiSliceProgressIndicator extends RenderBox{
   }
 
   void _trnasformCanvas(ui.Offset topLeft) {
-    _canvas.translate(topLeft.dx + size.width / 2, topLeft.dy + size.height / 2);
+    _canvas.translate(
+        topLeft.dx + size.width / 2, topLeft.dy + size.height / 2);
     _canvas.rotate(math.pi / 2);
     _canvas.save();
   }
@@ -234,13 +232,13 @@ class RenderMultiSliceProgressIndicator extends RenderBox{
   }
 
   void _drawSlices() {
-    if(_spinnerSlicesShouldBeDrawn)
-      _drawSpinnerSlices();
+    if (_spinnerSlicesShouldBeDrawn)
+       _drawSpinnerSlices();
 
-    if(_successSlicesShouldBeDrawn)
+    if (_successSlicesShouldBeDrawn) 
       _drawSuccessSlices();
-    
-    if(_failureSlicesShouldBeDrawn)
+
+    if (_failureSlicesShouldBeDrawn)
       _drawFailureSlices();
   }
 
@@ -338,17 +336,13 @@ class RenderMultiSliceProgressIndicator extends RenderBox{
   void _restoreCanvas() {
     _canvas.restore();
   }
-
 }
 
-
-extension DoubleEx on double{
-
+extension DoubleEx on double {
   double get multiplyBy2Pi => this * math.pi * 2;
 }
 
-extension ColorsListEx on List<Color>{
-
+extension ColorsListEx on List<Color> {
   List<Color> mapWithOpacity(double opacity) {
     return map((c) => c.withOpacity(opacity)).toList();
   }

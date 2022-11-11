@@ -23,7 +23,7 @@ const _defaultColors = <Color>[
 ];
 
 const _defaultSuccessColors = <Color>[
-    // Colors.lightGreen,
+  // Colors.lightGreen,
   Color(0xFF00838F), //800
   Color(0xFF0097A7), //700
   Color(0xFF00BCD4), //500
@@ -44,5 +44,3 @@ const _defaultFailureColors = <Color>[
 ];
 
 const _defaultColorStops = <double>[0.25, 0.35, 0.5, 0.65, 0.8, 0.9, 0.97];
-
-

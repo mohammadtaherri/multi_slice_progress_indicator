@@ -1,7 +1,6 @@
 part of multi_slice_progress_indicator;
 
-class MultiSliceProgressIndicator extends LeafRenderObjectWidget{
-
+class MultiSliceProgressIndicator extends LeafRenderObjectWidget {
   const MultiSliceProgressIndicator({
     super.key,
     this.radius = _defaultRadius,
@@ -9,7 +8,7 @@ class MultiSliceProgressIndicator extends LeafRenderObjectWidget{
     this.colors = _defaultColors,
     this.successColors = _defaultSuccessColors,
     this.failureColors = _defaultFailureColors,
-    this.colorStops = _defaultColorStops ,
+    this.colorStops = _defaultColorStops,
     required this.controller,
   });
 
@@ -52,6 +51,3 @@ class MultiSliceProgressIndicator extends LeafRenderObjectWidget{
     renderObject.startAngle = controller.startAngle;
   }
 }
-
-
-
