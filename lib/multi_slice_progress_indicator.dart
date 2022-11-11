@@ -8,5 +8,5 @@ import 'package:flutter/rendering.dart';
 
 part './src/constants.dart';
 part './src/controller.dart';
-part './src/render_object.dart';
+part 'src/rendering.dart';
 part './src/widget.dart';
