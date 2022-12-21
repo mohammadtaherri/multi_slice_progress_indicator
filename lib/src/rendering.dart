@@ -204,18 +204,18 @@ class RenderMultiSliceProgressIndicator extends RenderBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     _canvas = context.canvas;
+    _canvas.save();
     _sliceStrokeWidth = math.min(size.width, size.height) / 6;
 
     _trnasformCanvas(offset);
     _drawIndicator();
-    _restoreCanvas();
+    _canvas.restore();
   }
 
   void _trnasformCanvas(ui.Offset topLeft) {
     _canvas.translate(
         topLeft.dx + size.width / 2, topLeft.dy + size.height / 2);
     _canvas.rotate(math.pi / 2);
-    _canvas.save();
   }
 
   void _drawIndicator() {
@@ -331,10 +331,6 @@ class RenderMultiSliceProgressIndicator extends RenderBox {
           math.pi * 2 + startAngle,
         ),
     );
-  }
-
-  void _restoreCanvas() {
-    _canvas.restore();
   }
 }
 
